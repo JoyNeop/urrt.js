@@ -1,3 +1,3 @@
 # Urrt.js
 
-It's a bookmark let. Welcome to make it into a browser extension.
+It's a bookmarklet. Welcome to make it into a browser extension.
