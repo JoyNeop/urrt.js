@@ -24,7 +24,7 @@ urrt.findAnfParseAllReadableElements = function () {
 
 urrt.initReaderView = function () {
 	var _readerView = document.createElement('div');
-	_readerView.innerHTML = 'Hello world!';
+	_readerView.innerHTML = '';
 	_readerView.setAttribute('id', 'urrt-reader-view');
 	_readerView.setAttribute('data-tag-name', 'p');
 
