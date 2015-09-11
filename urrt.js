@@ -5,7 +5,7 @@ var urrt = {
 	}
 };
 
-urrt.findAnfParseAllReadableElements = function () {
+urrt.findAndParseAllReadableElements = function () {
 	var elements = document.querySelectorAll('h1, h2, h3, h4, h5, p, blockquote');
 	var parsedElements = [];
 	for (var i = 0; i < elements.length; i++) {
@@ -64,7 +64,7 @@ urrt.initReaderView = function () {
 urrt.go = function () {
 	urrt.initReaderView();
 
-	var parsedElements = urrt.findAnfParseAllReadableElements();
+	var parsedElements = urrt.findAndParseAllReadableElements();
 	urrt.updatingService = window.setInterval(function(){
 		var _word = parsedElements[urrt._currentReadingElementIndex].word;
 		var _tagName = parsedElements[urrt._currentReadingElementIndex].tagName;
