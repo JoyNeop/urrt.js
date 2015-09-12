@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Urrt.js</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="favicon shortcut icon" href="/favicon.ico">
+	<link rel="apple-touch-icon" href="/favicon.png">
+	<style>
+	@import url(/fonts/seravek.css);
+	p.hidden {
+		display: none;
+	}
+	</style>
+</head>
+<body>
+	<p class="hidden">
+		This is Urrt.js, a small tool which lets you read a webpage by words very fast.
+	</p>
+	<script src="./urrt.js"></script>
+	<button id="btn-run">Go!</button>
+	<script>
+	document.getElementById('btn-run').addEventListener('click', function () {
+		document.getElementById('btn-run').remove();
+		urrt.go();
+	});
+	</script>
+</body>

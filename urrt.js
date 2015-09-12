@@ -1,11 +1,17 @@
 var urrt = {
 	'_currentReadingElementIndex': 0,
 	'config': {
-		'_wordPersistDuration': 60/310
+		'_wordPersistDuration': 60/650,
+		'_seperationLineManipulation': 5
 	}
 };
 
 urrt.findAndParseAllReadableElements = function () {
+	Array.prototype.manipulate = function (times) {
+		for (var i = 0; i < times; i++) {
+			this.push(this[0]);
+		};
+	};
 	var elements = document.querySelectorAll('h1, h2, h3, h4, h5, p, blockquote');
 	var parsedElements = [];
 	for (var i = 0; i < elements.length; i++) {
@@ -17,13 +23,19 @@ urrt.findAndParseAllReadableElements = function () {
 				word: _words[j]
 			});
 		};
+		for (var j = 0; j < urrt.config._seperationLineManipulation; j++) {
+			parsedElements.push({
+				tagName: 'p',
+				word: '* * * * * * *'
+			});
+		}
 	};
 	return parsedElements;
 };
 
 urrt.initReaderView = function () {
 	var _readerView = document.createElement('div');
-	_readerView.innerHTML = '<div class="urrt-time-count--container"><div class="urrt-time-count">Remaining<div id="urrt-reader-view--time-remaining--inner" class="urrt-time-count--inner">**:**</div></div><div class="urrt-time-count">Duration<div id="urrt-reader-view--time-eta--inner" class="urrt-time-count--inner">**:**</div></div><div class="urrt-time-count">Progress<div id="urrt-reader-view--time-percentage--inner" class="urrt-time-count--inner">*%</div></div></div><div id="urrt-reader-view--progress-bar"><div id="urrt-reader-view--progress-bar--inner"></div></div><div id="urrt-reader-view--content"></div>';
+	_readerView.innerHTML = '<div class="urrt-time-count--container"><div class="urrt-time-count">WPM<div id="urrt-reader-view--wpm--inner" class="urrt-time-count--inner">***</div></div><div class="urrt-time-count">Remaining<div id="urrt-reader-view--time-remaining--inner" class="urrt-time-count--inner">**:**</div></div><div class="urrt-time-count">Duration<div id="urrt-reader-view--time-eta--inner" class="urrt-time-count--inner">**:**</div></div><div class="urrt-time-count">Progress<div id="urrt-reader-view--time-percentage--inner" class="urrt-time-count--inner">*%</div></div></div><div id="urrt-reader-view--progress-bar"><div id="urrt-reader-view--progress-bar--inner"></div></div><div id="urrt-reader-view--content"></div>';
 	_readerView.setAttribute('id', 'urrt-reader-view');
 	_readerView.setAttribute('data-tag-name', 'p');
 
@@ -44,11 +56,11 @@ urrt.initReaderView = function () {
 			'height: 100vh;',
 		'}',
 		'.urrt-time-count--container { position: fixed; top: 30px; left: 10px; text-align: center; width: 100vw; }',
-		'.urrt-time-count { font-size: 16px; color: #999; display: inline-block; padding: 0 22px 0; text-transform: lowercase; }',
+		'.urrt-time-count { font-size: 16px; color: #999; display: inline-block; padding: 0 25px 0; text-transform: lowercase; }',
 		'.urrt-time-count--inner { font-size: 28px; color: #666; display: block; }',
 		'#urrt-reader-view--progress-bar { position: fixed; top: 0; left: 0; width: 100vw; height: 10px; }',
-		'#urrt-reader-view--progress-bar--inner { background: #08C; width: 1px; height: 10px; -webkit-transition: all _DELAY_ms ease; transition: all _DELAY_ms ease;}'.replace(/_DELAY_/g, urrt.config._wordPersistDuration*1000),
-		'#urrt-reader-view--content { padding-top: 29vh; }',
+		'#urrt-reader-view--progress-bar--inner { background: #0895D5; width: 1px; height: 10px; -webkit-transition: all _DELAY_ms ease; transition: all _DELAY_ms ease;}'.replace(/_DELAY_/g, urrt.config._wordPersistDuration*1000),
+		'#urrt-reader-view--content { letter-spacing: 0.12rem; padding-top: 29vh; }',
 		'#urrt-reader-view[data-tag-name="h1"] #urrt-reader-view--content { font-size: 94px; font-weight: 600; }',
 		'#urrt-reader-view[data-tag-name="h2"] #urrt-reader-view--content { font-size: 89px; font-weight: 600; }',
 		'#urrt-reader-view[data-tag-name="h3"] #urrt-reader-view--content { font-size: 84px; font-weight: 600; }',
@@ -76,6 +88,9 @@ urrt.go = function () {
 		_sec = _sec.toString().length == 1 ? '0' + _sec.toString() : _sec.toString();
 		return (_min + ':' + _sec);
 	};
+
+	// Calculate word-per-min
+	document.getElementById('urrt-reader-view--wpm--inner').innerHTML = Math.round(60/urrt.config._wordPersistDuration);
 
 	// Calculate ETA
 	document.getElementById('urrt-reader-view--time-eta--inner').innerHTML = _convertTimeIntoMinAndSec( urrt.config._wordPersistDuration * parsedElements.length );
