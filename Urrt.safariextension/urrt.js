@@ -120,5 +120,3 @@ urrt.go = function () {
 		document.getElementById('urrt-reader-view--time-percentage--inner').innerHTML = (urrt._currentReadingElementIndex/parsedElements.length*100) == 100 ? ( '100%' ) : ( Math.floor(urrt._currentReadingElementIndex/parsedElements.length*100) + '%');
 	}, urrt.config._wordPersistDuration*1000);
 };
-
-urrt.go();
