@@ -1,8 +1,8 @@
 var urrt = {
 	'_currentReadingElementIndex': 0,
 	'config': {
-		'_wordPersistDuration': 60/650,
-		'_seperationLineManipulation': 5
+		'_wordPersistDuration': 60/470,
+		'_seperationLineManipulation': 3
 	}
 };
 
