@@ -1,7 +1,7 @@
 var urrt = {
 	'_currentReadingElementIndex': 0,
 	'config': {
-		'_wordPersistDuration': 60/450,
+		'_wordPersistDuration': 60/400,
 		'_seperationLineManipulation': 3,
 		'_sentenceEndManipulation': 3
 	}
@@ -69,7 +69,7 @@ urrt.initReaderView = function () {
 		'.urrt-time-count--inner { font-size: 28px; color: #666; display: block; }',
 		'#urrt-reader-view--progress-bar { position: fixed; top: 0; left: 0; width: 100vw; height: 10px; }',
 		'#urrt-reader-view--progress-bar--inner { background: #0895D5; width: 1px; height: 10px; -webkit-transition: all _DELAY_ms ease; transition: all _DELAY_ms ease;}'.replace(/_DELAY_/g, urrt.config._wordPersistDuration*1000),
-		'#urrt-reader-view--content { text-align: left; letter-spacing: 0.12rem; padding-top: 29vh; padding-left: 40vw; }',
+		'#urrt-reader-view--content { color: #B00; text-align: left; letter-spacing: 0.12rem; padding-top: 29vh; padding-left: 40vw; }',
 		'#urrt-reader-view[data-tag-name="h1"] #urrt-reader-view--content { font-size: 94px; font-weight: 600; }',
 		'#urrt-reader-view[data-tag-name="h2"] #urrt-reader-view--content { font-size: 89px; font-weight: 600; }',
 		'#urrt-reader-view[data-tag-name="h3"] #urrt-reader-view--content { font-size: 84px; font-weight: 600; }',
@@ -114,16 +114,18 @@ urrt.go = function () {
 			return _tmpWord;
 		};
 		if (3 < _word.length < 6) {
-			_word = _highlightChar(1);
+			// _word = _highlightChar(1);
 		} else if (5 < _word.length < 9) {
-			_word = _highlightChar(3);
+			// _word = _highlightChar(3);
 		} else if (8 < _word.length < 11) {
-			_word = _highlightChar(4);
+			// _word = _highlightChar(4);
 		} else if (10 < _word.length < 15) {
-			_word = _highlightChar(6);
+			// _word = _highlightChar(6);
 		} else if (14 < _word.length) {
-			_word = _highlightChar(7);
+			// _word = _highlightChar(7);
 		};
+
+		_word = _word.replace(/([aeiouAEIOU])/g, '<span style="color: #000;">$1</span>');
 
 		if (_tagName == 'blockquote') {
 			_word = '<span style="color: #CCC; margin-right: 20px;">“</span><span style="border-bottom: 2px solid #EEE; padding-bottom: 8px;">' + _word + '</span><span style="color: #CCC; margin-left: 20px;">”</span>';
