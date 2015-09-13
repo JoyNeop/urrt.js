@@ -1,7 +1,7 @@
 var urrt = {
 	'_currentReadingElementIndex': 0,
 	'config': {
-		'_wordPersistDuration': 60/470,
+		'_wordPersistDuration': 60/450,
 		'_seperationLineManipulation': 3,
 		'_sentenceEndManipulation': 3
 	}
@@ -69,7 +69,7 @@ urrt.initReaderView = function () {
 		'.urrt-time-count--inner { font-size: 28px; color: #666; display: block; }',
 		'#urrt-reader-view--progress-bar { position: fixed; top: 0; left: 0; width: 100vw; height: 10px; }',
 		'#urrt-reader-view--progress-bar--inner { background: #0895D5; width: 1px; height: 10px; -webkit-transition: all _DELAY_ms ease; transition: all _DELAY_ms ease;}'.replace(/_DELAY_/g, urrt.config._wordPersistDuration*1000),
-		'#urrt-reader-view--content { letter-spacing: 0.12rem; padding-top: 29vh; }',
+		'#urrt-reader-view--content { text-align: left; letter-spacing: 0.12rem; padding-top: 29vh; padding-left: 40vw; }',
 		'#urrt-reader-view[data-tag-name="h1"] #urrt-reader-view--content { font-size: 94px; font-weight: 600; }',
 		'#urrt-reader-view[data-tag-name="h2"] #urrt-reader-view--content { font-size: 89px; font-weight: 600; }',
 		'#urrt-reader-view[data-tag-name="h3"] #urrt-reader-view--content { font-size: 84px; font-weight: 600; }',
@@ -105,14 +105,6 @@ urrt.go = function () {
 	document.getElementById('urrt-reader-view--time-eta--inner').innerHTML = _convertTimeIntoMinAndSec( urrt.config._wordPersistDuration * parsedElements.length );
 
 	urrt.updatingService = window.setInterval(function(){
-		// Move progress bar
-		document.getElementById('urrt-reader-view--progress-bar--inner').style.width = (urrt._currentReadingElementIndex/parsedElements.length*100) + '%';
-
-		// Update remaining time
-		document.getElementById('urrt-reader-view--time-remaining--inner').innerHTML = _convertTimeIntoMinAndSec(urrt.config._wordPersistDuration * parsedElements.length - urrt._currentReadingElementIndex * urrt.config._wordPersistDuration);
-
-		// Update progress percentage
-		document.getElementById('urrt-reader-view--time-percentage--inner').innerHTML = (urrt._currentReadingElementIndex/parsedElements.length*100) == 100 ? ( '100%' ) : ( Math.floor(urrt._currentReadingElementIndex/parsedElements.length*100) + '%');
 
 		var _word = parsedElements[urrt._currentReadingElementIndex].word;
 		var _tagName = parsedElements[urrt._currentReadingElementIndex].tagName;
@@ -138,7 +130,18 @@ urrt.go = function () {
 		};
 		document.getElementById('urrt-reader-view').setAttribute('data-tag-name', _tagName);
 		document.getElementById('urrt-reader-view--content').innerHTML = _word;
+
 		urrt._currentReadingElementIndex += 1;
+
+		// Move progress bar
+		document.getElementById('urrt-reader-view--progress-bar--inner').style.width = (urrt._currentReadingElementIndex/parsedElements.length*100) + '%';
+
+		// Update remaining time
+		document.getElementById('urrt-reader-view--time-remaining--inner').innerHTML = _convertTimeIntoMinAndSec(urrt.config._wordPersistDuration * parsedElements.length - urrt._currentReadingElementIndex * urrt.config._wordPersistDuration);
+
+		// Update progress percentage
+		document.getElementById('urrt-reader-view--time-percentage--inner').innerHTML = (urrt._currentReadingElementIndex/parsedElements.length*100) == 100 ? ( '100%' ) : ( Math.floor(urrt._currentReadingElementIndex/parsedElements.length*100) + '%');
+
 		if (urrt._currentReadingElementIndex >= parsedElements.length) {
 			window.clearInterval(urrt.updatingService);
 		};
