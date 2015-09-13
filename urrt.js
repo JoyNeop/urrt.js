@@ -2,7 +2,8 @@ var urrt = {
 	'_currentReadingElementIndex': 0,
 	'config': {
 		'_wordPersistDuration': 60/470,
-		'_seperationLineManipulation': 3
+		'_seperationLineManipulation': 3,
+		'_sentenceEndManipulation': 3
 	}
 };
 
@@ -22,6 +23,14 @@ urrt.findAndParseAllReadableElements = function () {
 				tagName: _tagName,
 				word: _words[j]
 			});
+			if (_words[j].charAt(_words[j].length-1).match(/(\.|\?|!)/g)) {
+				for (var k = 0; k < urrt.config._sentenceEndManipulation; k++) {
+					parsedElements.push({
+						tagName: _tagName,
+						word: _words[j]
+					});
+				};
+			};
 		};
 		for (var j = 0; j < urrt.config._seperationLineManipulation; j++) {
 			parsedElements.push({
@@ -96,6 +105,15 @@ urrt.go = function () {
 	document.getElementById('urrt-reader-view--time-eta--inner').innerHTML = _convertTimeIntoMinAndSec( urrt.config._wordPersistDuration * parsedElements.length );
 
 	urrt.updatingService = window.setInterval(function(){
+		// Move progress bar
+		document.getElementById('urrt-reader-view--progress-bar--inner').style.width = (urrt._currentReadingElementIndex/parsedElements.length*100) + '%';
+
+		// Update remaining time
+		document.getElementById('urrt-reader-view--time-remaining--inner').innerHTML = _convertTimeIntoMinAndSec(urrt.config._wordPersistDuration * parsedElements.length - urrt._currentReadingElementIndex * urrt.config._wordPersistDuration);
+
+		// Update progress percentage
+		document.getElementById('urrt-reader-view--time-percentage--inner').innerHTML = (urrt._currentReadingElementIndex/parsedElements.length*100) == 100 ? ( '100%' ) : ( Math.floor(urrt._currentReadingElementIndex/parsedElements.length*100) + '%');
+		
 		var _word = parsedElements[urrt._currentReadingElementIndex].word;
 		var _tagName = parsedElements[urrt._currentReadingElementIndex].tagName;
 
@@ -124,15 +142,6 @@ urrt.go = function () {
 		if (urrt._currentReadingElementIndex >= parsedElements.length) {
 			window.clearInterval(urrt.updatingService);
 		};
-
-		// Move progress bar
-		document.getElementById('urrt-reader-view--progress-bar--inner').style.width = (urrt._currentReadingElementIndex/parsedElements.length*100) + '%';
-
-		// Update remaining time
-		document.getElementById('urrt-reader-view--time-remaining--inner').innerHTML = _convertTimeIntoMinAndSec(urrt.config._wordPersistDuration * parsedElements.length - urrt._currentReadingElementIndex * urrt.config._wordPersistDuration);
-
-		// Update progress percentage
-		document.getElementById('urrt-reader-view--time-percentage--inner').innerHTML = (urrt._currentReadingElementIndex/parsedElements.length*100) == 100 ? ( '100%' ) : ( Math.floor(urrt._currentReadingElementIndex/parsedElements.length*100) + '%');
 	}, urrt.config._wordPersistDuration*1000);
 };
 

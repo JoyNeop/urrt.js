@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Joy Neop</string>
 	<key>Builder Version</key>
-	<string>9537.85.10.17.1</string>
+	<string>10600.5.17</string>
 	<key>CFBundleDisplayName</key>
 	<string>Urrt</string>
 	<key>CFBundleIdentifier</key>
@@ -39,7 +39,12 @@
 	<key>Content</key>
 	<dict>
 		<key>Scripts</key>
-		<dict/>
+		<dict>
+			<key>Start</key>
+			<array>
+				<string>injected-1.js</string>
+			</array>
+		</dict>
 	</dict>
 	<key>DeveloperIdentifier</key>
 	<string>X4SDG9S467</string>
