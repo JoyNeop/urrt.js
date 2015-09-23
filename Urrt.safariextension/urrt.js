@@ -3,7 +3,8 @@ var urrt = {
 	'config': {
 		'_wordPersistDuration': 60/400,
 		'_seperationLineManipulation': 3,
-		'_sentenceEndManipulation': 3
+		'_sentenceEndManipulation': 3,
+		'_selector': 'h1, h2, h3, h4, h5, p, blockquote'
 	}
 };
 
@@ -13,7 +14,7 @@ urrt.findAndParseAllReadableElements = function () {
 			this.push(this[0]);
 		};
 	};
-	var elements = document.querySelectorAll('h1, h2, h3, h4, h5, p, blockquote');
+	var elements = document.querySelectorAll(urrt.config._selector);
 	var parsedElements = [];
 	for (var i = 0; i < elements.length; i++) {
 		var _tagName = elements[i].tagName.toLowerCase();
@@ -85,7 +86,11 @@ urrt.initReaderView = function () {
 	document.body.appendChild(_readerView);
 };
 
-urrt.go = function () {
+urrt.go = function (msg) {
+	if ('selector' in msg) {
+		urrt.config._selector = msg.selector;
+	};
+
 	urrt.initReaderView();
 
 	var parsedElements = urrt.findAndParseAllReadableElements();
@@ -134,4 +139,6 @@ urrt.go = function () {
 	}, urrt.config._wordPersistDuration*1000);
 };
 
-urrt.go();
+urrt.go({
+	'selector': 'h1, h2, h3, h4, h5, p, blockquote'
+});
