@@ -4,6 +4,7 @@ var urrt = {
 		'_wordPersistDuration': 60/400,
 		'_seperationLineManipulation': 3,
 		'_sentenceEndManipulation': 3,
+		'_HeadingManipulation': 1,
 		'_selector': 'h1, h2, h3, h4, h5, p, blockquote'
 	}
 };
@@ -24,6 +25,14 @@ urrt.findAndParseAllReadableElements = function () {
 				tagName: _tagName,
 				word: _words[j]
 			});
+			if (_tagName.match(/h\d/)) {
+				for (var k = 0; k < urrt.config._HeadingManipulation; k++) {
+					parsedElements.push({
+						tagName: _tagName,
+						word: _words[j]
+					});
+				};
+			};
 			if (_words[j].charAt(_words[j].length-1).match(/(\.|\?|!)/g)) {
 				for (var k = 0; k < urrt.config._sentenceEndManipulation; k++) {
 					parsedElements.push({
@@ -53,7 +62,7 @@ urrt.initReaderView = function () {
 	var css = document.createElement('style');
 	css.innerHTML = [
 		'#urrt-reader-view {',
-			'font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", sans-serif;',
+			'font-family: "SF UI Display", -apple-system, "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", sans-serif;',
 			'color: #000;',
 			'text-align: center;',
 			'background: rgba(255, 255, 255, 1);',
@@ -70,15 +79,15 @@ urrt.initReaderView = function () {
 		'.urrt-time-count--inner { font-size: 28px; color: #666; display: block; }',
 		'#urrt-reader-view--progress-bar { position: fixed; top: 0; left: 0; width: 100vw; height: 10px; }',
 		'#urrt-reader-view--progress-bar--inner { background: #0895D5; width: 1px; height: 10px; -webkit-transition: all _DELAY_ms ease; transition: all _DELAY_ms ease;}'.replace(/_DELAY_/g, urrt.config._wordPersistDuration*1000),
-		'#urrt-reader-view--content { color: #000; text-align: left; letter-spacing: 0.12rem; padding-top: 29vh; padding-left: 40vw; }',
-		'#urrt-reader-view[data-tag-name="h1"] #urrt-reader-view--content { font-size: 94px; font-weight: 600; }',
-		'#urrt-reader-view[data-tag-name="h2"] #urrt-reader-view--content { font-size: 89px; font-weight: 600; }',
-		'#urrt-reader-view[data-tag-name="h3"] #urrt-reader-view--content { font-size: 84px; font-weight: 600; }',
-		'#urrt-reader-view[data-tag-name="h4"] #urrt-reader-view--content { font-size: 79px; font-weight: 600; }',
-		'#urrt-reader-view[data-tag-name="h5"] #urrt-reader-view--content { font-size: 74px; font-weight: 600; }',
-		'#urrt-reader-view[data-tag-name="h6"] #urrt-reader-view--content { font-size: 62px; font-weight: 400; }',
-		'#urrt-reader-view[data-tag-name="p"] #urrt-reader-view--content { font-size: 60px; font-weight: 300; }',
-		'#urrt-reader-view[data-tag-name="blockquote"] #urrt-reader-view--content { font-size: 60px; font-weight: 300; font-style: italic; }'
+		'#urrt-reader-view--content { color: #000; text-align: left; letter-spacing: -0.05rem; margin-top: 45vh; margin-left: 40vw; padding-left: 3vw; -webkit-transform: translateY(-50%); }',
+		'#urrt-reader-view[data-tag-name="h1"] #urrt-reader-view--content { font-size: 94px; font-weight: 800; }',
+		'#urrt-reader-view[data-tag-name="h2"] #urrt-reader-view--content { font-size: 89px; font-weight: 800; }',
+		'#urrt-reader-view[data-tag-name="h3"] #urrt-reader-view--content { font-size: 84px; font-weight: 800; }',
+		'#urrt-reader-view[data-tag-name="h4"] #urrt-reader-view--content { font-size: 79px; font-weight: 800; }',
+		'#urrt-reader-view[data-tag-name="h5"] #urrt-reader-view--content { font-size: 74px; font-weight: 800; }',
+		'#urrt-reader-view[data-tag-name="h6"] #urrt-reader-view--content { font-size: 62px; font-weight: 800; }',
+		'#urrt-reader-view[data-tag-name="p"] #urrt-reader-view--content { font-size: 60px; font-weight: 500; border-left: 3px solid #CCC; }',
+		'#urrt-reader-view[data-tag-name="blockquote"] #urrt-reader-view--content { font-size: 60px; font-weight: 400; font-style: italic; }'
 	].join('');
 	document.head.appendChild(css);
 
@@ -114,7 +123,7 @@ urrt.go = function (msg) {
 		var _word = parsedElements[urrt._currentReadingElementIndex].word;
 		var _tagName = parsedElements[urrt._currentReadingElementIndex].tagName;
 
-		_word = _word.replace(/([qwrtypsdfghjklzxcvbnm])/i, '<span style="color: #E00;">$1</span>');
+		// _word = _word.replace(/^(\w)/i, '<span style="color: #E00;">$1</span>');
 
 		if (_tagName == 'blockquote') {
 			_word = '<span style="color: #CCC; margin-right: 20px;">“</span><span style="border-bottom: 2px solid #EEE; padding-bottom: 8px;">' + _word + '</span><span style="color: #CCC; margin-left: 20px;">”</span>';
@@ -140,5 +149,5 @@ urrt.go = function (msg) {
 };
 
 urrt.go({
-	'selector': 'h1, h2, h3, h4, h5, p, blockquote'
+	'selector': '.section-inner.layoutSingleColumn h1, .section-inner.layoutSingleColumn h2, .section-inner.layoutSingleColumn h3, .section-inner.layoutSingleColumn h4, .section-inner.layoutSingleColumn h5, .section-inner.layoutSingleColumn h6, .section-inner.layoutSingleColumn p, .section-inner.layoutSingleColumn blockquote'
 });
