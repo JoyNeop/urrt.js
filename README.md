@@ -1,21 +1,17 @@
 # Urrt.js
 
-## Safari extension
+Reader for Medium.
 
-It's very simple.
+## Use
 
-## Chrome extension
+Type "https://github.com/JoyNeop/urrt.js/blob/master/urrt.js" into [Bookmarkletly](http://www.bookmarkletly.com/) and you will get the bookmarklet below:
 
-TODO.
+```javascript
+javascript:(function(){var%20x=new%20XMLHttpRequest();x.open("GET","https://cdn.rawgit.com/JoyNeop/urrt.js/master/urrt.js",true);x.onload=function(e){Function(e.target.responseText)()};x.send()})()
+```
 
-## Firefox extension
-
-You are welcome.
+Then use this bookmarklet on [Medium](https://medium.com/), at an article page.
 
 ## License
 
 MIT License.
-
-## Acknowledgement
-
-- canisobs's answer on [Stack Overflow](http://stackoverflow.com/questions/17098467/safari-extension-how-do-you-inject-content-scripts-only-after-a-toolbar-button)
