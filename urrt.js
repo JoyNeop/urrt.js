@@ -1,11 +1,11 @@
 var urrt = {
 	'_currentReadingElementIndex': 0,
 	'config': {
-		'_wordPersistDuration': 60/400,
+		'_wordPersistDuration': 60/360,
 		'_seperationLineManipulation': 3,
 		'_sentenceEndManipulation': 3,
 		'_HeadingManipulation': 1,
-		'_selector': '.section-inner.layoutSingleColumn h1, .section-inner.layoutSingleColumn h2, .section-inner.layoutSingleColumn h3, .section-inner.layoutSingleColumn h4, .section-inner.layoutSingleColumn h5, .section-inner.layoutSingleColumn h6, .section-inner.layoutSingleColumn p, .section-inner.layoutSingleColumn blockquote'
+		'_selector': '_CC_ h1, _CC_ h2, _CC_ h3, _CC_ h4, _CC_ h5, _CC_ h6, _CC_ p, _CC_ blockquote'.replace(/_CC_/g, '.section-inner.layoutSingleColumn')
 	}
 };
 
@@ -82,12 +82,11 @@ urrt.initReaderView = function () {
 		'#urrt-reader-view[data-tag-name="h5"] #urrt-reader-view--content { font-size: 74px; font-weight: 800; }',
 		'#urrt-reader-view[data-tag-name="h6"] #urrt-reader-view--content { font-size: 62px; font-weight: 800; }',
 		'#urrt-reader-view[data-tag-name="p"] #urrt-reader-view--content { font-size: 60px; font-weight: 500; border-left: 3px solid #CCC; }',
-		'#urrt-reader-view[data-tag-name="hr"] #urrt-reader-view--content { color: #EEE; }',
+		'#urrt-reader-view[data-tag-name="hr"] #urrt-reader-view--content { font-size: 60px; color: #999; }',
 		'#urrt-reader-view[data-tag-name="blockquote"] #urrt-reader-view--content { font-size: 60px; font-weight: 400; font-style: italic; }'
 	].join('');
 	document.head.appendChild(css);
 
-	// Put into document tree
 	document.body.appendChild(_readerView);
 };
 
@@ -142,6 +141,4 @@ urrt.go = function (msg) {
 	}, urrt.config._wordPersistDuration*1000);
 };
 
-urrt.go({
-	'selector': '.section-inner.layoutSingleColumn h1, .section-inner.layoutSingleColumn h2, .section-inner.layoutSingleColumn h3, .section-inner.layoutSingleColumn h4, .section-inner.layoutSingleColumn h5, .section-inner.layoutSingleColumn h6, .section-inner.layoutSingleColumn p, .section-inner.layoutSingleColumn blockquote'
-});
+urrt.go({});
