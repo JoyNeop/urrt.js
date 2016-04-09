@@ -95,8 +95,8 @@ urrt.initReaderView = function () {
 };
 
 urrt.go = function (msg) {
-	if (msg.force !== true && document.querySelectorAll('meta[name="urrt-exmaple"]')) {
-		return undefined;
+	if (!msg.hasOwnProperty('force') && document.querySelectorAll('meta[name="urrt-exmaple"]').length !== 0) {
+		return 123;
 	}
 
 	if ('selector' in msg) {
