@@ -69,11 +69,11 @@ urrt.initReaderView = function () {
 			'width: 100vw;',
 			'height: 100vh;',
 		'}',
-		'.urrt-time-count--container { position: fixed; top: 30px; left: 10px; text-align: center; width: 100vw; }',
+		'.urrt-time-count--container { position: fixed; top: 30px; left: 0; text-align: center; width: 100vw; }',
 		'.urrt-time-count { font-size: 16px; color: #999; display: inline-block; padding: 0 25px 0; text-transform: lowercase; }',
 		'.urrt-time-count--inner { font-size: 28px; color: #666; display: block; }',
 		'#urrt-reader-view--progress-bar { position: fixed; top: 0; left: 0; width: 100vw; height: 10px; }',
-		'#urrt-reader-view--progress-bar--inner { background: #0895D5; width: 1px; height: 10px; -webkit-transition: all _DELAY_ms ease; transition: all _DELAY_ms ease;}'.replace(/_DELAY_/g, urrt.config._wordPersistDuration*1000),
+		'#urrt-reader-view--progress-bar--inner { background: #05BDF8; width: 1px; height: 5px; -webkit-transition: all _DELAY_ms ease; transition: all _DELAY_ms ease;}'.replace(/_DELAY_/g, urrt.config._wordPersistDuration*1000),
 		'#urrt-reader-view--content { color: #000; text-align: left; letter-spacing: -0.05rem; margin-top: 45vh; margin-left: 40vw; padding-left: 3vw; -webkit-transform: translateY(-50%); }',
 		'#urrt-reader-view[data-tag-name="h1"] #urrt-reader-view--content { font-size: 94px; font-weight: 800; }',
 		'#urrt-reader-view[data-tag-name="h2"] #urrt-reader-view--content { font-size: 89px; font-weight: 800; }',
@@ -83,7 +83,11 @@ urrt.initReaderView = function () {
 		'#urrt-reader-view[data-tag-name="h6"] #urrt-reader-view--content { font-size: 62px; font-weight: 800; }',
 		'#urrt-reader-view[data-tag-name="p"] #urrt-reader-view--content { font-size: 60px; font-weight: 500; border-left: 3px solid #CCC; }',
 		'#urrt-reader-view[data-tag-name="hr"] #urrt-reader-view--content { font-size: 60px; color: #999; }',
-		'#urrt-reader-view[data-tag-name="blockquote"] #urrt-reader-view--content { font-size: 60px; font-weight: 400; font-style: italic; }'
+		'#urrt-reader-view[data-tag-name="blockquote"] #urrt-reader-view--content { font-size: 60px; font-weight: 400; font-style: italic; }',
+		'@media screen and (max-width: 1000px) {',
+			'.urrt-time-count--container { display: none; }',
+			'#urrt-reader-view--content { margin-left: 10vw; }',
+		'}'
 	].join('');
 	document.head.appendChild(css);
 
@@ -91,6 +95,10 @@ urrt.initReaderView = function () {
 };
 
 urrt.go = function (msg) {
+	if (msg.force !== true && document.querySelectorAll('meta[name="urrt-exmaple"]')) {
+		return undefined;
+	}
+
 	if ('selector' in msg) {
 		urrt.config._selector = msg.selector;
 	};
